@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker/app/home_page.dart';
 import 'package:time_tracker/app/signin/sign_in.dart';
 
 class LandingPage extends StatefulWidget {
@@ -24,6 +25,6 @@ class _LandingPageState extends State<LandingPage> {
       );
     }
 
-    return Container(); // temporary placeholder for homepage
+    return HomePage();
   }
 }
