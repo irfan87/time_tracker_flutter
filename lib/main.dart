@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:time_tracker/app/landing_page.dart';
+import 'package:time_tracker/services/auth.dart';
 
 // when use firebase to initialized, don't forget to add future as below
 Future<void> main() async {
@@ -20,7 +21,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: LandingPage(),
+      home: LandingPage(
+        auth: Auth(), // Auth() is the interface of AuthBase
+      ),
     );
   }
 }
