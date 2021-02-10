@@ -20,6 +20,10 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
+    widget.auth.authStateChanges().listen((user) {
+      print('uid: ${user?.uid}');
+    });
+
     _updateUser(widget.auth.currentUser);
   }
 
