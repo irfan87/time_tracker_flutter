@@ -23,10 +23,6 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text('Time Tracker'),
-        elevation: 2.0,
-      ),
       body: _buildContent(),
     );
   }
