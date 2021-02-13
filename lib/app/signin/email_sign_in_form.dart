@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EmailSignInForm extends StatelessWidget {
+  List<Widget> _buildChildren() {
+    return [
+      TextField(
+        decoration: InputDecoration(
+          labelText: 'Email',
+          hintText: 'your@email.com',
+        ),
+        keyboardType: TextInputType.emailAddress,
+      ),
+      TextField(
+        decoration: InputDecoration(
+          labelText: 'Password',
+        ),
+        obscureText: true,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildChildren(),
+      ),
+    );
   }
 }
