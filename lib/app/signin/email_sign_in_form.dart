@@ -69,6 +69,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? 'Need an Account? Register'
         : 'Have an account? Sign In';
 
+    bool submitEnabled = _email.isNotEmpty && _password.isNotEmpty;
+
     return [
       _buildEmailTextField(),
       SizedBox(
@@ -80,7 +82,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       FormSubmitElevatedButton(
         text: primaryText,
-        onPressed: _submit,
+        onPressed: submitEnabled ? _submit : null,
       ),
       SizedBox(
         height: 8.0,
@@ -104,6 +106,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       textInputAction: TextInputAction.next,
       focusNode: _emailFocusNode,
       onEditingComplete: _emailEditingComplete,
+      onChanged: (email) => _updateState(),
     );
   }
 
@@ -117,6 +120,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       textInputAction: TextInputAction.done,
       focusNode: _passwordFocusNode,
       onEditingComplete: _submit,
+      onChanged: (password) => _updateState(),
     );
   }
 
@@ -130,5 +134,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         children: _buildChildren(),
       ),
     );
+  }
+
+  void _updateState() {
+    print('Email: $_email\nPassword: $_password');
+    setState(() {});
   }
 }
