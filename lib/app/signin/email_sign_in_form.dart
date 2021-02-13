@@ -34,10 +34,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   bool _submitted = false;
 
   void _submit() async {
+    print('Submit called');
+
     setState(() {
       _submitted = true;
     });
     try {
+      // this code is just for network test if the connection get slow and the app get loading.
+      // uncomment if you would like to see the result
+      // DON'T APPLY THIS ON THE PRODUCTION
+      await Future.delayed(Duration(seconds: 3));
+
       if (_formType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {
