@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:time_tracker/common_widgets/form_submit_elevated_button.dart';
 
 class EmailSignInForm extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _submit() {
+    print(
+        'Email: ${_emailController.text}\nPassword: ${_passwordController.text}');
+  }
+
   List<Widget> _buildChildren() {
     return [
       TextField(
+        controller: _emailController,
         decoration: InputDecoration(
           labelText: 'Email',
           hintText: 'your@email.com',
@@ -16,6 +24,7 @@ class EmailSignInForm extends StatelessWidget {
         height: 8.0,
       ),
       TextField(
+        controller: _passwordController,
         decoration: InputDecoration(
           labelText: 'Password',
         ),
@@ -26,7 +35,7 @@ class EmailSignInForm extends StatelessWidget {
       ),
       FormSubmitElevatedButton(
         text: 'Sign In',
-        onPressed: () {},
+        onPressed: _submit,
       ),
       SizedBox(
         height: 8.0,
