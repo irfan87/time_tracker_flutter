@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:time_tracker/common_widgets/form_submit_elevated_button.dart';
 import 'package:time_tracker/services/auth.dart';
 
@@ -61,24 +62,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         : 'Have an account? Sign In';
 
     return [
-      TextField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email',
-          hintText: 'your@email.com',
-        ),
-        keyboardType: TextInputType.emailAddress,
-      ),
+      _buildEmailTextField(),
       SizedBox(
         height: 8.0,
       ),
-      TextField(
-        controller: _passwordController,
-        decoration: InputDecoration(
-          labelText: 'Password',
-        ),
-        obscureText: true,
-      ),
+      _buildPasswordTextField(),
       SizedBox(
         height: 8.0,
       ),
@@ -94,6 +82,30 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         child: Text(secondaryText),
       ),
     ];
+  }
+
+  TextField _buildEmailTextField() {
+    return TextField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        hintText: 'your@email.com',
+      ),
+      keyboardType: TextInputType.emailAddress,
+      autocorrect: false,
+      textInputAction: TextInputAction.next,
+    );
+  }
+
+  TextField _buildPasswordTextField() {
+    return TextField(
+      controller: _passwordController,
+      decoration: InputDecoration(
+        labelText: 'Password',
+      ),
+      obscureText: true,
+      textInputAction: TextInputAction.done,
+    );
   }
 
   @override
