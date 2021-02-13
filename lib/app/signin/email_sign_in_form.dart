@@ -31,20 +31,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   String get _password => _passwordController.text;
 
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
+
   bool _submitted = false;
 
-  void _submit() async {
-    print('Submit called');
+  bool _isLoading = false;
 
+  void _submit() async {
     setState(() {
       _submitted = true;
+      _isLoading = true;
     });
     try {
-      // this code is just for network test if the connection get slow and the app get loading.
-      // uncomment if you would like to see the result
-      // DON'T APPLY THIS ON THE PRODUCTION
-      await Future.delayed(Duration(seconds: 3));
-
       if (_formType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {
@@ -54,6 +51,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -83,7 +84,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         : 'Have an account? Sign In';
 
     bool submitEnabled = widget.emailValidator.isValid(_email) &&
-        widget.passwordValidator.isValid(_password);
+        widget.passwordValidator.isValid(_password) &&
+        !_isLoading;
 
     return [
       _buildEmailTextField(),
@@ -102,7 +104,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         height: 8.0,
       ),
       TextButton(
-        onPressed: _toggleFormType,
+        onPressed: !_isLoading ? _toggleFormType : null,
         child: Text(secondaryText),
       ),
     ];
@@ -117,6 +119,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         labelText: 'Email',
         hintText: 'your@email.com',
         errorText: showErrorText ? widget.invalidEmailErrorText : null,
+        enabled: _isLoading == false,
       ),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
@@ -136,6 +139,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       decoration: InputDecoration(
         labelText: 'Password',
         errorText: showErrorText ? widget.invalidPasswordErrorText : null,
+        enabled: _isLoading == false,
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
@@ -158,7 +162,6 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _updateState() {
-    print('Email: $_email\nPassword: $_password');
     setState(() {});
   }
 }
