@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:time_tracker/app/signin/validators.dart';
 import 'package:time_tracker/common_widgets/form_submit_elevated_button.dart';
+import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 
 enum EmailSignInFormType {
@@ -53,25 +54,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop();
     } catch (e) {
       // if this application run on IOS platform
-      if (Platform.isIOS) {
-        print('show Cupertino alert dialog');
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Sign in failed'),
-              content: Text(e.toString()),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Okay'),
-                ),
-              ],
-            );
-          },
-        );
-      }
+      showAlertDialog(
+        context,
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      );
     } finally {
       setState(() {
         _isLoading = false;
