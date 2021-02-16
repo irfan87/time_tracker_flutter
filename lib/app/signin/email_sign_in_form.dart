@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:time_tracker/app/signin/validators.dart';
@@ -50,7 +52,26 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
       Navigator.of(context).pop();
     } catch (e) {
-      print(e.toString());
+      // if this application run on IOS platform
+      if (Platform.isIOS) {
+        print('show Cupertino alert dialog');
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Sign in failed'),
+              content: Text(e.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Okay'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
