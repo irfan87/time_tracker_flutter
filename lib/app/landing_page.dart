@@ -26,13 +26,13 @@ class LandingPage extends StatelessWidget {
           return HomePage(
             auth: auth,
           );
+        } else {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
-
-        return Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
       },
     );
   }
