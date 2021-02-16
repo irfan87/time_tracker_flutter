@@ -24,9 +24,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),
-        home: LandingPage(
-          auth: Auth(), // Auth() is the interface of AuthBase
-        ),
+        home: LandingPage(),
       ),
     );
   }
