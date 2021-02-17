@@ -94,13 +94,9 @@ class _SignInPageState extends State<SignInPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Sign In',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.w800,
-            ),
+          SizedBox(
+            height: 50.0,
+            child: _buildHeader(),
           ),
           SizedBox(
             height: 48.0,
@@ -110,7 +106,7 @@ class _SignInPageState extends State<SignInPage> {
             text: 'Sign in with Google',
             textColor: Colors.black87,
             color: Colors.white,
-            onPressed: () => _signInWithGoogle(context),
+            onPressed: _isLoading ? null : () => _signInWithGoogle(context),
           ),
           SizedBox(
             height: 8.0,
@@ -120,7 +116,7 @@ class _SignInPageState extends State<SignInPage> {
             text: 'Sign in with Facebook',
             textColor: Colors.white,
             color: Color(0xFF334D92),
-            onPressed: () => _signInWithFacebook(context),
+            onPressed: _isLoading ? null : () => _signInWithFacebook(context),
           ),
           SizedBox(
             height: 8.0,
@@ -129,7 +125,7 @@ class _SignInPageState extends State<SignInPage> {
             text: 'Sign in with Email',
             textColor: Colors.white,
             color: Colors.teal[700],
-            onPressed: () => _signInWithEmail(context),
+            onPressed: _isLoading ? null : () => _signInWithEmail(context),
           ),
           SizedBox(
             height: 8.0,
@@ -149,9 +145,26 @@ class _SignInPageState extends State<SignInPage> {
             text: 'Go Anonymous',
             textColor: Colors.black,
             color: Colors.lime[300],
-            onPressed: () => _signInAnonymously(context),
+            onPressed: _isLoading ? null : () => _signInAnonymously(context),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return Text(
+      'Sign In',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 32.0,
+        fontWeight: FontWeight.w800,
       ),
     );
   }
