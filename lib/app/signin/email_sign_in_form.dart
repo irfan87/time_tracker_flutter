@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:time_tracker/app/signin/validators.dart';
 import 'package:time_tracker/common_widgets/form_submit_elevated_button.dart';
-import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
+import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -52,11 +52,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       // if this application run on IOS platform
-      showAlertDialog(
+      showExceptionAlertDialog(
         context,
         title: 'Sign in failed',
-        content: e.message,
-        defaultActionText: 'OK',
+        exception: e,
       );
     } finally {
       setState(() {
