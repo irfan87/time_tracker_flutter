@@ -1,16 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:time_tracker/app/models/email_sign_in_model.dart';
 import 'package:time_tracker/app/signin/validators.dart';
 import 'package:time_tracker/common_widgets/form_submit_elevated_button.dart';
 import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 import 'package:provider/provider.dart';
-
-enum EmailSignInFormType {
-  signIn,
-  register,
-}
 
 class EmailSignInFormStateful extends StatefulWidget
     with EmailAndPasswordValidators {
