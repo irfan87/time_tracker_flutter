@@ -28,6 +28,8 @@ class JobsPage extends StatelessWidget {
     }
   }
 
+  void _createJob() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +47,10 @@ class JobsPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _createJob,
+        child: Icon(Icons.add),
       ),
     );
   }
