@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:time_tracker/app/models/email_sign_in_model.dart';
 import 'package:time_tracker/app/signin/validators.dart';
+import 'package:time_tracker/services/auth.dart';
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
-  final String email;
-  final String password;
-  final EmailSignInFormType formType;
-  final bool isLoading;
-  final bool submitted;
+  String email;
+  String password;
+  EmailSignInFormType formType;
+  bool isLoading;
+  bool submitted;
+
+  final AuthBase auth;
 
   EmailSignInChangeModel({
     this.email = '',
@@ -15,6 +18,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.formType = EmailSignInFormType.signIn,
     this.isLoading = false,
     this.submitted = false,
+    @required this.auth,
   });
 
   String get primaryButtonText {
@@ -47,19 +51,53 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     return showErrorText ? invalidEmailErrorText : null;
   }
 
-  EmailSignInChangeModel copyWith({
+  void updateWith({
     String email,
     String password,
     EmailSignInFormType formType,
     bool isLoading,
     bool submitted,
   }) {
-    return EmailSignInChangeModel(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      formType: formType ?? this.formType,
-      isLoading: isLoading ?? this.isLoading,
-      submitted: submitted ?? this.submitted,
+    this.email = email ?? this.email;
+    this.password = password ?? this.password;
+    this.formType = formType ?? this.formType;
+    this.isLoading = isLoading ?? this.isLoading;
+    this.submitted = submitted ?? this.submitted;
+
+    notifyListeners();
+  }
+
+  void updateEmail(String email) => updateWith(email: email);
+
+  void updatePassword(String password) => updateWith(password: password);
+
+  void toggleFormType() {
+    final formType = this.formType == EmailSignInFormType.signIn
+        ? EmailSignInFormType.register
+        : EmailSignInFormType.signIn;
+
+    updateWith(
+      email: '',
+      password: '',
+      formType: formType,
+      isLoading: false,
+      submitted: false,
     );
+  }
+
+  Future<void> submit() async {
+    updateWith(submitted: true, isLoading: true);
+
+    try {
+      if (formType == EmailSignInFormType.signIn) {
+        await auth.signInWithEmailAndPassword(email, password);
+      } else {
+        await auth.createUserWithEmailAndPassword(email, password);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      updateWith(isLoading: false);
+    }
   }
 }
