@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_tracker/app/home/models/job.dart';
 import 'package:time_tracker/services/api_path.dart';
+import 'package:time_tracker/services/firestore_service.dart';
 
 abstract class Database {
   Future<void> createJob(Job job);
@@ -10,39 +10,18 @@ abstract class Database {
 
 class FirestoreDatabase implements Database {
   final String uid;
+  final _service = FirestoreService.instance;
 
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
 
-  Future<void> createJob(Job job) => _setData(
+  Future<void> createJob(Job job) => _service.setData(
         path: APIPath.job(uid, 'job_abc'),
         data: job.toMap(),
       );
 
-  Future<void> _setData({String path, Map<String, dynamic> data}) async {
-    final reference = FirebaseFirestore.instance.doc(path);
-
-    print('$path: $data');
-    await reference.set(data);
-  }
-
   // read all jobs
-  Stream<List<Job>> jobsStream() => _collectionStream(
+  Stream<List<Job>> jobsStream() => _service.collectionStream(
         path: APIPath.jobs(uid),
         builder: (data) => Job.fromMap(data),
       );
-
-  // generic helper method for extracting of the snapshot
-  // builder will generate model object for data
-  Stream<List<T>> _collectionStream<T>({
-    @required String path,
-    @required T Function(Map<String, dynamic> data) builder,
-  }) {
-    final reference = FirebaseFirestore.instance.collection(path);
-    final snapshots = reference.snapshots();
-
-    return snapshots.map(
-      (snapshot) =>
-          snapshot.docs.map((snapshot) => builder(snapshot.data())).toList(),
-    );
-  }
 }
