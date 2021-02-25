@@ -43,7 +43,7 @@ class FirestoreDatabase implements Database {
                 )
               : null;
         },
-      ),
+      ).toList(),
     );
   }
 }
