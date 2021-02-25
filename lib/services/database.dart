@@ -26,15 +26,23 @@ class FirestoreDatabase implements Database {
   }
 
   // read all jobs
-  Stream<List<Job>> jobsStream() {
-    final path = APIPath.jobs(uid);
+  Stream<List<Job>> jobsStream() => _collectionStream(
+        path: APIPath.jobs(uid),
+        builder: (data) => Job.fromMap(data),
+      );
+
+  // generic helper method for extracting of the snapshot
+  // builder will generate model object for data
+  Stream<List<T>> _collectionStream<T>({
+    @required String path,
+    @required T Function(Map<String, dynamic> data) builder,
+  }) {
     final reference = FirebaseFirestore.instance.collection(path);
     final snapshots = reference.snapshots();
 
     return snapshots.map(
-      (snapshot) => snapshot.docs
-          .map((snapshot) => Job.fromMap(snapshot.data()))
-          .toList(),
+      (snapshot) =>
+          snapshot.docs.map((snapshot) => builder(snapshot.data())).toList(),
     );
   }
 }
