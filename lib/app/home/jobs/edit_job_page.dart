@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:time_tracker/app/home/models/job.dart';
 import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
@@ -16,9 +15,8 @@ class EditJobPage extends StatefulWidget {
     this.job,
   }) : super(key: key);
 
-  static Future<void> show(BuildContext context, {Job job}) async {
-    final database = Provider.of<Database>(context, listen: false);
-
+  static Future<void> show(BuildContext context,
+      {Database database, Job job}) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EditJobPage(
@@ -102,12 +100,16 @@ class _EditJobPageState extends State<EditJobPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(widget.job == null ? 'New Job' : 'Edit Current Job'),
+        title: Text(
+          widget.job == null
+              ? 'New Job'.toUpperCase()
+              : 'Edit Current Job'.toUpperCase(),
+        ),
         actions: [
           TextButton(
             onPressed: _submit,
             child: Text(
-              'Save',
+              'Save'.toUpperCase(),
               style: TextStyle(fontSize: 18.0, color: Colors.white),
             ),
           ),

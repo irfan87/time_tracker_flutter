@@ -54,12 +54,12 @@ class JobsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Jobs'),
+        title: Text('Jobs'.toUpperCase()),
         actions: [
           TextButton(
             onPressed: () => _confirmSignOut(context),
             child: Text(
-              'Logout',
+              'Logout'.toUpperCase(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,
@@ -70,7 +70,13 @@ class JobsPage extends StatelessWidget {
       ),
       body: _buildContents(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => EditJobPage.show(context),
+        onPressed: () => EditJobPage.show(
+          context,
+          database: Provider.of<Database>(
+            context,
+            listen: false,
+          ),
+        ),
         child: Icon(Icons.add),
       ),
     );

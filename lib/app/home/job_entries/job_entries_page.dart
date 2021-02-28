@@ -46,14 +46,18 @@ class JobEntriesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(job.name),
+        title: Text(job.name.toUpperCase()),
         actions: <Widget>[
           TextButton(
             child: Text(
-              'Edit',
+              'Edit'.toUpperCase(),
               style: TextStyle(fontSize: 18.0, color: Colors.white),
             ),
-            onPressed: () => EditJobPage.show(context, job: job),
+            onPressed: () => EditJobPage.show(
+              context,
+              database: database,
+              job: job,
+            ),
           ),
         ],
       ),
