@@ -67,6 +67,11 @@ class _EditJobPageState extends State<EditJobPage> {
         final jobs = await widget.database.jobsStream().first;
         final allNames = jobs.map((job) => job.name).toList();
 
+        // even the name in the form is similar with the name in the firebase, we have to tell flutter to exclude the existing job's name
+        if (widget.job != null) {
+          allNames.remove(widget.job.name);
+        }
+
         if (allNames.contains(_name)) {
           showAlertDialog(
             context,
@@ -75,9 +80,10 @@ class _EditJobPageState extends State<EditJobPage> {
             defaultActionText: 'Okay',
           );
         } else {
-          final job = Job(name: _name, ratePerHour: _ratePerHour);
+          final id = widget.job?.id ?? documentIdFromCurrentDate();
+          final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
 
-          await widget.database.createJob(job);
+          await widget.database.setJob(job);
 
           Navigator.of(context).pop();
         }
