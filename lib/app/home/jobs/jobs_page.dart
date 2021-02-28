@@ -33,23 +33,6 @@ class JobsPage extends StatelessWidget {
     }
   }
 
-  Future<void> _createJob(BuildContext context) async {
-    try {
-      // if not working, please put final database, outside of try block
-      final database = Provider.of<Database>(context, listen: false);
-      await database.createJob(Job(
-        name: 'blogging',
-        ratePerHour: 10,
-      ));
-    } on FirebaseException catch (e) {
-      showExceptionAlertDialog(
-        context,
-        title: 'Operation Failed',
-        exception: e,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
