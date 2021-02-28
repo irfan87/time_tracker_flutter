@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/app/home/models/job.dart';
 import 'package:time_tracker/services/database.dart';
 
 class AddJobPage extends StatefulWidget {
@@ -41,13 +42,14 @@ class _AddJobPageState extends State<AddJobPage> {
     return false;
   }
 
-  void _submit() {
-    // TODO: VALIDATE AND SAVE DATA
+  Future<void> _submit() async {
     if (_validateAndSaveForm()) {
-      print('name: $_name\nrate per hour: $_ratePerHour');
+      final job = Job(name: _name, ratePerHour: _ratePerHour);
+
+      await widget.database.createJob(job);
+
+      Navigator.of(context).pop();
     }
-    // TODO: SUBMIT DATA TO FIRESTORE
-    final database = Provider.of<Database>(context, listen: false);
   }
 
   @override
