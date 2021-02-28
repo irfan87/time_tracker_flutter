@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_tracker/services/database.dart';
 
 class AddJobPage extends StatefulWidget {
+  final Database database;
+
+  AddJobPage({Key key, @required this.database}) : super(key: key);
+
   static Future<void> show(BuildContext context) async {
+    final database = Provider.of<Database>(context, listen: false);
+
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => AddJobPage(),
+        builder: (context) => AddJobPage(
+          database: database,
+        ),
         fullscreenDialog: true,
       ),
     );
@@ -37,6 +47,7 @@ class _AddJobPageState extends State<AddJobPage> {
       print('name: $_name\nrate per hour: $_ratePerHour');
     }
     // TODO: SUBMIT DATA TO FIRESTORE
+    final database = Provider.of<Database>(context, listen: false);
   }
 
   @override
