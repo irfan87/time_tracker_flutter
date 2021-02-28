@@ -4,7 +4,7 @@ import 'package:time_tracker/services/api_path.dart';
 import 'package:time_tracker/services/firestore_service.dart';
 
 abstract class Database {
-  Future<void> createJob(Job job);
+  Future<void> setJob(Job job);
   Stream<List<Job>> jobsStream();
 }
 
@@ -17,8 +17,9 @@ class FirestoreDatabase implements Database {
 
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
 
-  Future<void> createJob(Job job) => _service.setData(
-        path: APIPath.job(uid, documentIdFromCurrentDate()),
+  // create or edit the job
+  Future<void> setJob(Job job) => _service.setData(
+        path: APIPath.job(uid, job.id),
         data: job.toMap(),
       );
 
