@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/app/home/models/job.dart';
+import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker/services/database.dart';
 
@@ -47,11 +48,23 @@ class _AddJobPageState extends State<AddJobPage> {
   Future<void> _submit() async {
     if (_validateAndSaveForm()) {
       try {
-        final job = Job(name: _name, ratePerHour: _ratePerHour);
+        final jobs = await widget.database.jobsStream().first;
+        final allNames = jobs.map((job) => job.name).toList();
 
-        await widget.database.createJob(job);
+        if (allNames.contains(_name)) {
+          showAlertDialog(
+            context,
+            title: 'Name already used',
+            content: 'Please choose a different job name',
+            defaultActionText: 'Okay',
+          );
+        } else {
+          final job = Job(name: _name, ratePerHour: _ratePerHour);
 
-        Navigator.of(context).pop();
+          await widget.database.createJob(job);
+
+          Navigator.of(context).pop();
+        }
       } on FirebaseException catch (e) {
         showExceptionAlertDialog(
           context,
