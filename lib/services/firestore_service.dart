@@ -6,11 +6,22 @@ class FirestoreService {
 
   static final instance = FirestoreService._();
 
-  Future<void> setData({String path, Map<String, dynamic> data}) async {
+  Future<void> setData({
+    @required String path,
+    @required Map<String, dynamic> data,
+  }) async {
     final reference = FirebaseFirestore.instance.doc(path);
 
     print('$path: $data');
     await reference.set(data);
+  }
+
+  Future<void> deleteData({@required String path}) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+
+    print('$path deleted');
+
+    await reference.delete();
   }
 
   // generic helper method for extracting of the snapshot
