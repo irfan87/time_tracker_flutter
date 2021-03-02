@@ -53,11 +53,12 @@ class JobEntriesPage extends StatelessWidget {
           appBar: AppBar(
             elevation: 2.0,
             title: Text(jobName.toUpperCase()),
+            centerTitle: true,
             actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'Edit'.toUpperCase(),
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
+              IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.white,
                 ),
                 onPressed: () => EditJobPage.show(
                   context,
@@ -65,14 +66,20 @@ class JobEntriesPage extends StatelessWidget {
                   job: job,
                 ),
               ),
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                onPressed: () => EntryPage.show(
+                  context: context,
+                  database: database,
+                  job: job,
+                ),
+              ),
             ],
           ),
           body: _buildContent(context, job),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () =>
-                EntryPage.show(context: context, database: database, job: job),
-          ),
         );
       },
     );
